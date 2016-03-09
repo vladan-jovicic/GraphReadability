@@ -4,6 +4,7 @@ import ilog.concert.IloIntVar;
 import ilog.cplex.IloCplex;
 
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by vlada on 3/9/2016.
@@ -19,8 +20,9 @@ public class ParallelrReadibilityCalc implements Runnable {
     //private int lnstart, lnend, rnstart, rnend, rstart, rend;
     private int [] lncoord, rncoord, lrcoord, rrcoord;
     private char type = 'T';
+    private CountDownLatch latch;
 
-    public ParallelrReadibilityCalc(Graph gg, int rr, IloIntVar[][][][] xtvar, IloCplex mmodel, int [] lncoord, int [] rncoord, int [] lrcoord, int [] rrcoord)
+    public ParallelrReadibilityCalc(Graph gg, int rr, IloIntVar[][][][] xtvar, IloCplex mmodel, int [] lncoord, int [] rncoord, int [] lrcoord, int [] rrcoord, CountDownLatch bar)
     {
         g = gg;
         r = rr;
@@ -30,6 +32,7 @@ public class ParallelrReadibilityCalc implements Runnable {
         this.rncoord = rncoord;
         this.lrcoord = lrcoord;
         this.rrcoord = rrcoord;
+        latch = bar;
     }
 
     public void run()
@@ -38,6 +41,7 @@ public class ParallelrReadibilityCalc implements Runnable {
         {
             transitivity();
         }
+        latch.countDown();
     }
 
     public void transitivity()

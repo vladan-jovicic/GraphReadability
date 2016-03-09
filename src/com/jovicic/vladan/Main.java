@@ -37,9 +37,9 @@ public class Main {
         g.addEdge(3,9);
         g.addEdge(4,6);*/
 
-        RandomGraph randGraph = new RandomGraph(20);
+        RandomGraph randGraph = new RandomGraph(10);
         g = randGraph.getNewRandomGraph();
-        ReadibilityCalculator rb = new ReadibilityCalculator(g, 10);
+        ReadibilityCalculator rb = new ReadibilityCalculator(g, 5);
         if (rb.calculate()) {
             g.printVerticesToFile("graphRandom.txt");
         } else {

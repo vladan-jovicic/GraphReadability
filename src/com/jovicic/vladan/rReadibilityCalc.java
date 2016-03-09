@@ -3,6 +3,8 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
+import java.util.regex.Matcher;
 
 /**
  * Created by vlada on 3/8/2016.
@@ -15,6 +17,8 @@ public class rReadibilityCalc {
     private IloIntVar [][] zvar;
     private IloCplex model;
     private Vector<Tuple> tuples;
+    private ParallelrReadibilityCalc [] threads;
+    private CountDownLatch latch;
 
     public rReadibilityCalc(Graph gg, int rr)
     {
@@ -102,66 +106,53 @@ public class rReadibilityCalc {
                 }
             }
         }
-        //sad tranzitivnost
-        /*for(int u=0; u<g.n/2; u++)
-        {
-            for(int v = g.n/2; v < g.n; v++)
-            {
-                for(int w = 0; w<g.n/2; w++)
-                {
-
-                    for(int i=1; i<=r; i++)
-                    {
-                        for(int j=1; j<=r; j++)
-                        {
-                            for(int l=1; l<=r; l++)
-                            {
-                                try {
-                                    model.addGe(model.sum(model.constant(2), model.prod(-1, xvar[u][v][i][j]),
-                                            model.prod(-1,xvar[v][w][j][l]), model.prod(1, xvar[u][w][i][l])),1);
-                                } catch (Exception e)
-                                {
-                                    System.out.println("Failed to add transitivity constraints");
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
         System.out.println("Adding transitivity constraints");
-        for(int u=0; u<g.n/2; u++)
-        {
-            for(int v = g.n/2; v < g.n; v++)
-            {
-                for(int w = 0; w<g.n/2; w++)
-                {
-                    for(int q = g.n/2; q < g.n; q++) {
 
-                        for (int i = 1; i <= r; i++) {
-                            for (int j = 1; j <= r; j++) {
-                                for (int k = 1; k <= r; k++) {
-                                    for(int l = 1; l<=r; l++)
-                                    {
-                                        try {
-                                            model.addGe(model.sum(model.constant(3), model.prod(-1, xvar[u][v][i][j]),
-                                                    model.prod(-1, xvar[v][w][k][l]), model.prod(-1, xvar[w][q][k][l]),
-                                                    model.prod(1, xvar[u][q][i][l])),1);
-                                        } catch (Exception e)
-                                        {
-                                            System.out.println("Failed to add transitivity constraints");
-                                        }
-                                    }
-                                }
-                            }
-                        }
+
+        int num_of_threads = Runtime.getRuntime().availableProcessors();
+        int thread_cnt = 0;
+        int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
+        int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
+        int exceptedNumOfThreads = (int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
+        threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
+        latch = new CountDownLatch(exceptedNumOfThreads);
+
+        //System.out.println("num of threads: " + n);
+        //jos pogledaj za neperfektno dijeljenje
+        for(int left = 0; left<(int)Math.sqrt(Math.sqrt(num_of_threads)); left++)
+        {
+            for(int right = 0; right<(int)Math.sqrt(Math.sqrt(num_of_threads)); right++)
+            {
+                for(int i=0; i<(int)Math.sqrt(Math.sqrt(num_of_threads)); i++)
+                {
+                    for(int j=0; j<(int)Math.sqrt(Math.sqrt(num_of_threads)); j++)
+                    {
+                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model, new int[] {left*numOfVer,(left+1)*numOfVer},
+                                new int [] {g.n/2 + right*numOfVer,g.n/2 + (right+1)*num_of_threads}, new int[] {i*sizeOfVer,(i+1)*sizeOfVer},
+                                new int[] {j*sizeOfVer,(j+1)*sizeOfVer}, latch);
+                        //threads[thread_cnt-1].run();
                     }
                 }
             }
+        } // pretpostavimo da ovo gore radi xD
+        System.out.println("Running threads ... ");
+        if(exceptedNumOfThreads == thread_cnt)
+        {
+            for(int i=0; i<exceptedNumOfThreads; i++)
+                threads[i].run();
         }
+        else
+            System.out.println("fucking parallel programming");
+        try {
+            latch.await();
+        } catch (InterruptedException e)
+        {
+            System.out.println("Failed .....");
+        }
+
         //sad simetricnost
         System.out.println("Adding equivalence constraints");
+        //nema svrhe ovo paralelizovati
         for(int u = 0; u < g.n/2; u++)
         {
             for(int v = g.n/2; v < g.n; v++)
@@ -194,9 +185,9 @@ public class rReadibilityCalc {
             if(model.getStatus() == IloCplex.Status.Optimal)
             {
                 tuples = new Vector<Tuple>();
-                for(int u=0; u<g.n; u++)
+                for(int u=0; u<g.n/2; u++)
                 {
-                    for(int v = 0; v < g.n; v++)
+                    for(int v = g.n/2; v < g.n; v++)
                     {
                         for(int i=1; i<=r; i++)
                         {
@@ -225,6 +216,7 @@ public class rReadibilityCalc {
             }
         } catch (Exception e)
         {
+            e.printStackTrace();
             System.out.println("Failed in solving model!");
         }
         return false;
