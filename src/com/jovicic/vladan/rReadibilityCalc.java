@@ -14,7 +14,7 @@ public class rReadibilityCalc {
     private int r;
     private IloIntVar [][] zvar;
     private IloCplex model;
-    private Vector<Touple> tuples;
+    private Vector<Tuple> tuples;
 
     public rReadibilityCalc(Graph gg, int rr)
     {
@@ -193,7 +193,7 @@ public class rReadibilityCalc {
             System.out.println(model.getStatus().toString());
             if(model.getStatus() == IloCplex.Status.Optimal)
             {
-                tuples = new Vector<Touple>();
+                tuples = new Vector<Tuple>();
                 for(int u=0; u<g.n; u++)
                 {
                     for(int v = 0; v < g.n; v++)
@@ -205,7 +205,7 @@ public class rReadibilityCalc {
                                 //System.out.println(model.getValue(xvar[u][v][i][j]));
                                 if(model.getValue(xvar[u][v][i][j]) == 1)
                                 {
-                                    Touple t = new Touple(4);
+                                    Tuple t = new Tuple(4);
                                     t.setTouple(new int[] {u,v,i,j});
                                     tuples.add(t);
                                     //if()
@@ -230,7 +230,7 @@ public class rReadibilityCalc {
         return false;
     }
 
-    public Vector<Touple> getTuples ()
+    public Vector<Tuple> getTuples ()
     {
         return tuples;
     }

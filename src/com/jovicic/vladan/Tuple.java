@@ -3,10 +3,10 @@ package com.jovicic.vladan;
 /**
  * Created by vlada on 3/8/2016.
  */
-public class Touple {
+public class Tuple {
     private int [] vec;
     private int size;
-    public Touple(int n)
+    public Tuple(int n)
     {
         size = n;
         vec =  new int[n];
