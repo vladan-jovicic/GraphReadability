@@ -1,8 +1,5 @@
 package com.jovicic.vladan;
 
-/**
- * Created by vlada on 3/8/2016.
- */
 public class Tuple {
     private int [] vec;
     private int size;

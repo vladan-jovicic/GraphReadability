@@ -146,7 +146,7 @@ public class rReadibilityCalc {
                                     {
                                         try {
                                             model.addGe(model.sum(model.constant(3), model.prod(-1, xvar[u][v][i][j]),
-                                                    model.prod(-1, xvar[v][w][k][l]), model.prod(-1, xvar[w][q][k][l]),
+                                                    model.prod(-1, xvar[w][v][k][j]), model.prod(-1, xvar[w][q][k][l]),
                                                     model.prod(1, xvar[u][q][i][l])),1);
                                         } catch (Exception e)
                                         {
@@ -194,9 +194,9 @@ public class rReadibilityCalc {
             if(model.getStatus() == IloCplex.Status.Optimal)
             {
                 tuples = new Vector<Tuple>();
-                for(int u=0; u<g.n; u++)
+                for(int u=0; u<g.n/2; u++)
                 {
-                    for(int v = 0; v < g.n; v++)
+                    for(int v = g.n/2; v < g.n; v++)
                     {
                         for(int i=1; i<=r; i++)
                         {
@@ -225,6 +225,7 @@ public class rReadibilityCalc {
             }
         } catch (Exception e)
         {
+            e.printStackTrace();
             System.out.println("Failed in solving model!");
         }
         return false;
