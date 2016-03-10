@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53d8f3e-a199-4060-b5ac-7b85a7f503ac" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/graphRandom.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Readibility of Graph/com/jovicic/vladan/Graph.class" afterPath="$PROJECT_DIR$/out/production/Readibility of Graph/com/jovicic/vladan/Graph.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Readibility of Graph/com/jovicic/vladan/Main.class" afterPath="$PROJECT_DIR$/out/production/Readibility of Graph/com/jovicic/vladan/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jovicic/vladan/Graph.java" afterPath="$PROJECT_DIR$/src/com/jovicic/vladan/Graph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jovicic/vladan/Main.java" afterPath="$PROJECT_DIR$/src/com/jovicic/vladan/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java" afterPath="$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java" />
     </list>
     <ignored path="Readibility of Graph.iws" />
@@ -30,10 +24,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32749563">
+            <state vertical-scroll-proportion="0.0">
               <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
               <folding />
             </state>
@@ -72,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rReadibilityCalc.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="rReadibilityCalc.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="140" column="86" selection-start-line="140" selection-start-column="86" selection-end-line="140" selection-end-column="86" />
+            <state vertical-scroll-proportion="1.8633976">
+              <caret line="173" column="50" selection-start-line="173" selection-start-column="50" selection-end-line="173" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -98,7 +92,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/ParallelrReadibilityCalc.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="64" column="45" selection-start-line="64" selection-start-column="45" selection-end-line="64" selection-end-column="45" />
+              <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -146,8 +140,8 @@
         <option value="$PROJECT_DIR$/src/com/jovicic/vladan/RandomGraph.java" />
         <option value="$PROJECT_DIR$/src/com/jovicic/vladan/ParallelrReadibilityCalc.java" />
         <option value="$PROJECT_DIR$/src/com/jovicic/vladan/Graph.java" />
-        <option value="$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java" />
         <option value="$PROJECT_DIR$/src/com/jovicic/vladan/Main.java" />
+        <option value="$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java" />
       </list>
     </option>
   </component>
@@ -994,10 +988,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Graph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="109" column="53" selection-start-line="109" selection-start-column="53" selection-end-line="109" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/ParallelrReadibilityCalc.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="64" column="45" selection-start-line="64" selection-start-column="45" selection-end-line="64" selection-end-column="45" />
+          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1012,31 +1024,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Graph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="109" column="53" selection-start-line="109" selection-start-column="53" selection-end-line="109" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="140" column="86" selection-start-line="140" selection-start-column="86" selection-end-line="140" selection-end-column="86" />
+        <state vertical-scroll-proportion="1.8633976">
+          <caret line="173" column="50" selection-start-line="173" selection-start-column="50" selection-end-line="173" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32749563">
-          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>

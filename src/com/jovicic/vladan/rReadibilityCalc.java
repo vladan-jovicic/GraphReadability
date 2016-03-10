@@ -145,45 +145,16 @@ public class rReadibilityCalc {
                 threads[i].run();
         }
         else
-            System.out.println("fucking parallel programming");
+            System.out.println("... parallel programming");
         try {
             latch.await();
         } catch (InterruptedException e)
         {
             System.out.println("Failed .....");
         }
-        //sad simetricnost
-        System.out.println("Adding equivalence constraints");
-        //nema svrhe ovo paralelizovati
-        /*for(int u = 0; u < g.n/2; u++)
-        {
-            for(int v = g.n/2; v < g.n; v++)
-            {
-                for(int i=1; i<=r; i++)
-                {
-                    for(int j=1; j<=r; j++)
-                    {
-
-                        // a                    b
-                        //vars[u][v][i][j] => vars[v][u][j][i] and vars[v][u][j][i] => vars[u][v][i][j]
-                        //(not a or b) and (not b or a)
-                        try {
-                            model.addGe(model.sum(model.constant(1), model.prod(-1, xvar[u][v][i][j]),
-                                    model.prod(1, xvar[v][u][j][i])), 1);
-                            model.addGe(model.sum(model.constant(1), model.prod(-1, xvar[v][u][j][i]),
-                                    model.prod(1, xvar[u][v][i][j])), 1);
-                        } catch(Exception e)
-                        {
-                            System.out.println("Failed to add simetricity constraints");
-                        }
-                    }
-                }
-            }
-        }*/
         try {
             System.out.println("Calculation finished! Trying to solve a model ....");
             model.solve();
-            System.out.println(model.getStatus().toString());
             if(model.getStatus() == IloCplex.Status.Optimal)
             {
                 tuples = new Vector<Tuple>();
@@ -201,8 +172,6 @@ public class rReadibilityCalc {
                                     Tuple t = new Tuple(4);
                                     t.setTouple(new int[] {u,v,i,j});
                                     tuples.add(t);
-                                    //if()
-                                    System.out.println("("+u+","+i+") ("+v+","+j+")");
                                 }
                             }
                         }
