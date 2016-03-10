@@ -12,10 +12,10 @@ import java.util.regex.Matcher;
 public class rReadibilityCalc {
 
     private Graph g;
-    private IloIntVar [][][][] xvar;
+    public IloIntVar [][][][] xvar;
     private int r;
     private IloIntVar [][] zvar;
-    private IloCplex model;
+    public IloCplex model;
     private Vector<Tuple> tuples;
     private ParallelrReadibilityCalc [] threads;
     private CountDownLatch latch;
@@ -116,25 +116,29 @@ public class rReadibilityCalc {
         int exceptedNumOfThreads = (int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
         threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
         latch = new CountDownLatch(exceptedNumOfThreads);
-
+        int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
+        System.out.println(model.getNrows());
         //System.out.println("num of threads: " + n);
         //jos pogledaj za neperfektno dijeljenje
-        for(int left = 0; left<(int)Math.sqrt(Math.sqrt(num_of_threads)); left++)
+        for(int left = 0; left<fourthRoot; left++)
         {
-            for(int right = 0; right<(int)Math.sqrt(Math.sqrt(num_of_threads)); right++)
+            for(int right = 0; right<fourthRoot; right++)
             {
-                for(int i=0; i<(int)Math.sqrt(Math.sqrt(num_of_threads)); i++)
+                for(int i=0; i<fourthRoot; i++)
                 {
-                    for(int j=0; j<(int)Math.sqrt(Math.sqrt(num_of_threads)); j++)
+                    for(int j=0; j<fourthRoot; j++)
                     {
-                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model, new int[] {left*numOfVer,(left+1)*numOfVer},
-                                new int [] {g.n/2 + right*numOfVer,g.n/2 + (right+1)*num_of_threads}, new int[] {i*sizeOfVer,(i+1)*sizeOfVer},
-                                new int[] {j*sizeOfVer,(j+1)*sizeOfVer}, latch);
+                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
+                                new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
+                                new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*num_of_threads},
+                                new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
+                                new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch, this);
                         //threads[thread_cnt-1].run();
                     }
                 }
             }
         } // pretpostavimo da ovo gore radi xD
+
         System.out.println("Running threads ... ");
         if(exceptedNumOfThreads == thread_cnt)
         {
@@ -149,11 +153,11 @@ public class rReadibilityCalc {
         {
             System.out.println("Failed .....");
         }
-
+        System.out.println(model.getNrows());
         //sad simetricnost
         System.out.println("Adding equivalence constraints");
         //nema svrhe ovo paralelizovati
-        for(int u = 0; u < g.n/2; u++)
+        /*for(int u = 0; u < g.n/2; u++)
         {
             for(int v = g.n/2; v < g.n; v++)
             {
@@ -177,7 +181,7 @@ public class rReadibilityCalc {
                     }
                 }
             }
-        }
+        }*/
         try {
             System.out.println("Calculation finished! Trying to solve a model ....");
             model.solve();
@@ -200,7 +204,7 @@ public class rReadibilityCalc {
                                     t.setTouple(new int[] {u,v,i,j});
                                     tuples.add(t);
                                     //if()
-                                    //System.out.println("("+u+","+i+") ("+v+","+j+")");
+                                    System.out.println("("+u+","+i+") ("+v+","+j+")");
                                 }
                             }
                         }

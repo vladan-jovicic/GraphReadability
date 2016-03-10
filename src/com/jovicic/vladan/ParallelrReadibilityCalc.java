@@ -21,8 +21,9 @@ public class ParallelrReadibilityCalc implements Runnable {
     private int [] lncoord, rncoord, lrcoord, rrcoord;
     private char type = 'T';
     private CountDownLatch latch;
+    private rReadibilityCalc calc;
 
-    public ParallelrReadibilityCalc(Graph gg, int rr, IloIntVar[][][][] xtvar, IloCplex mmodel, int [] lncoord, int [] rncoord, int [] lrcoord, int [] rrcoord, CountDownLatch bar)
+    public ParallelrReadibilityCalc(Graph gg, int rr, IloIntVar[][][][] xtvar, IloCplex mmodel, int [] lncoord, int [] rncoord, int [] lrcoord, int [] rrcoord, CountDownLatch bar, rReadibilityCalc ccalc)
     {
         g = gg;
         r = rr;
@@ -33,6 +34,7 @@ public class ParallelrReadibilityCalc implements Runnable {
         this.lrcoord = lrcoord;
         this.rrcoord = rrcoord;
         latch = bar;
+        calc = ccalc;
     }
 
     public void run()
@@ -63,9 +65,14 @@ public class ParallelrReadibilityCalc implements Runnable {
                                     for(int l = rrcoord[0]; l<= rrcoord[1]; l++)
                                     {
                                         try {
-                                            model.addGe(model.sum(model.constant(3), model.prod(-1, xvar[u][v][i][j]),
-                                                    model.prod(-1, xvar[v][w][k][l]), model.prod(-1, xvar[w][q][k][l]),
-                                                    model.prod(1, xvar[u][q][i][l])),1);
+                                            if(u == 2 && i == 2 && v == 6 && j == 1 && w == 1 && k == 2 && q == 5 && l == 1)
+                                            {
+                                                System.out.println("Hm pa koji ti je moj");
+                                            }
+                                            //System.out.println("Adding transitivity for ("+u+","+i+") ("+v+","+j+") ("+w+","+k+") ("+q+","+l+") (");
+                                            calc.model.addGe(calc.model.sum(calc.model.constant(3), calc.model.prod(-1, calc.xvar[u][v][i][j]),
+                                                    calc.model.prod(-1, calc.xvar[w][v][l][k]), calc.model.prod(-1, calc.xvar[w][q][k][l]),
+                                                    calc.model.prod(1, calc.xvar[u][q][i][l])),1);
                                         }catch (Exception e)
                                         {
                                             System.out.println("Failed to add transitivity constraint");

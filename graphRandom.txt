@@ -1,10 +1,8 @@
-bb
-bb
-bb
 0a
-bb
+0a
+0a
+0a
 a0
 a0
 a0
-aa
-bb
+a0
