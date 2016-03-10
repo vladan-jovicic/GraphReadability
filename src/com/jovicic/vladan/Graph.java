@@ -99,4 +99,22 @@ public class Graph {
 
 
     }
+
+    public void printGraphToFile(String filename)
+    {
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+            for (int u = 0; u < n / 2; u++) {
+                for (int v = n / 2; v < n; v++) {
+                    if (adjMatrix[u][v])
+                        out.write(u + " " + v + "\n");
+
+                }
+            }
+            out.close();
+        }catch (Exception e)
+        {
+            System.out.println("Failed to print");
+        }
+    }
 }

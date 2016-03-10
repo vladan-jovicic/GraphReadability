@@ -117,7 +117,6 @@ public class rReadibilityCalc {
         threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
         latch = new CountDownLatch(exceptedNumOfThreads);
         int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
-        System.out.println(model.getNrows());
         //System.out.println("num of threads: " + n);
         //jos pogledaj za neperfektno dijeljenje
         for(int left = 0; left<fourthRoot; left++)
@@ -139,7 +138,7 @@ public class rReadibilityCalc {
             }
         } // pretpostavimo da ovo gore radi xD
 
-        System.out.println("Running threads ... ");
+        System.out.println("Running threads up to " + exceptedNumOfThreads + " threads");
         if(exceptedNumOfThreads == thread_cnt)
         {
             for(int i=0; i<exceptedNumOfThreads; i++)
@@ -153,7 +152,6 @@ public class rReadibilityCalc {
         {
             System.out.println("Failed .....");
         }
-        System.out.println(model.getNrows());
         //sad simetricnost
         System.out.println("Adding equivalence constraints");
         //nema svrhe ovo paralelizovati

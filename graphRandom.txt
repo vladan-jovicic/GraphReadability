@@ -1,8 +1,0 @@
-ba
-0b
-bc
-0c
-a0
-ba
-bc
-c0
