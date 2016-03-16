@@ -27,11 +27,11 @@ public class Main {
         g.addEdge(5,9);
         g.addEdge(5,10);
         g.addEdge(5,11);*/
-        GridGraph gridg = new GridGraph(4,6);
+        GridGraph gridg = new GridGraph(3,4);
         g = gridg.getGridGraph();
 
         ReadibilityCalculator rb = new ReadibilityCalculator(g,4,2);
-        if (rb.calculate()) {
+        if (rb.isReadibilityExactly(3, true)) {
             g.printGraphToFile("inputGraph.txt");
             g.printVerticesToFile("graphRandom.txt");
         } else {

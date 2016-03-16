@@ -64,9 +64,9 @@ public class ParallelrReadibilityCalc implements Runnable {
                                     {
                                         try {
                                             //System.out.println("Adding transitivity for ("+u+","+i+") ("+v+","+j+") ("+w+","+k+") ("+q+","+l+") (");
-                                            model.addGe(model.sum(model.constant(3), model.prod(-1, xvar[u][v][i][j]),
-                                                    model.prod(-1, xvar[w][v][k][j]), model.prod(-1, xvar[w][q][k][l]),
-                                                    model.prod(1, xvar[u][q][i][l])),1);
+                                            model.addGe(model.sum(model.constant(3), model.prod(-1, xvar[u][v-g.n/2][i][j]),
+                                                    model.prod(-1, xvar[w][v-g.n/2][k][j]), model.prod(-1, xvar[w][q-g.n/2][k][l]),
+                                                    model.prod(1, xvar[u][q-g.n/2][i][l])),1);
                                         }catch (Exception e)
                                         {
                                             System.out.println("Failed to add transitivity constraint");

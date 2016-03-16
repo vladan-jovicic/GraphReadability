@@ -24,13 +24,13 @@ public class rReadibilityCalc {
     {
         this.r = rr;
         g = gg;
-        xvar = new IloIntVar[g.n][g.n][r+1][];
+        xvar = new IloIntVar[g.n/2][g.n/2][r+1][];
         zvar = new IloIntVar[g.eSize][];
         try {
             model = new IloCplex();
             model.addMaximize(model.constant(1));
-            for (int u = 0; u < g.n; u++) {
-                for (int v = 0; v < g.n; v++) {
+            for (int u = 0; u < g.n/2; u++) {
+                for (int v = 0; v < g.n/2; v++) {
                     for (int i = 0; i <= r; i++) {
                         xvar[u][v][i] = model.boolVarArray(r+1);
                     }
@@ -70,7 +70,7 @@ public class rReadibilityCalc {
                             for(int j=i; j>=1; j--)
                             {
                                 //xvars[u][v][r-j+1][j]
-                                expr1.addTerm(1, xvar[u][v][r-j+1][othSide++]);
+                                expr1.addTerm(1, xvar[u][v-g.n/2][r-j+1][othSide++]);
                             }
                             model.addGe(model.sum(expr1,model.prod(-i, zvar[eCnt][i])),0);
                         }
@@ -94,7 +94,7 @@ public class rReadibilityCalc {
                             int othSide = 1;
                             for(int j = i; j>= 1; j--)
                             {
-                                expr.addTerm(-1, xvar[u][v][r-j+1][othSide++]);
+                                expr.addTerm(-1, xvar[u][v-g.n/2][r-j+1][othSide++]);
                             }
                             model.addGe(model.sum(model.constant(i), expr), 1);
                         }
@@ -167,7 +167,7 @@ public class rReadibilityCalc {
                             for(int j=1; j<=r; j++)
                             {
                                 //System.out.println(model.getValue(xvar[u][v][i][j]));
-                                if(model.getValue(xvar[u][v][i][j]) == 1)
+                                if(model.getValue(xvar[u][v-g.n/2][i][j]) == 1)
                                 {
                                     Tuple t = new Tuple(4);
                                     t.setTouple(new int[] {u,v,i,j});
