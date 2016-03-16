@@ -9,11 +9,28 @@ public class Main {
     private static rReadibilityCalc calc;
     public static void main(String [] args)
     {
-        Graph g;
+        Graph g;/* = new Graph(12);
+        g.addEdge(0,6);
+        g.addEdge(0,7);
+        g.addEdge(1,6);
+        g.addEdge(1,8);
+        g.addEdge(2,6);
+        g.addEdge(2,7);
+        g.addEdge(2,8);
+        g.addEdge(2,9);
+        g.addEdge(3,7);
+        g.addEdge(3,9);
+        g.addEdge(3,10);
+        g.addEdge(4,8);
+        g.addEdge(4,9);
+        g.addEdge(4,11);
+        g.addEdge(5,9);
+        g.addEdge(5,10);
+        g.addEdge(5,11);*/
+        GridGraph gridg = new GridGraph(4,6);
+        g = gridg.getGridGraph();
 
-        RandomGraph randGraph = new RandomGraph(10);
-        g = randGraph.getNewRandomGraph();
-        ReadibilityCalculator rb = new ReadibilityCalculator(g, 5);
+        ReadibilityCalculator rb = new ReadibilityCalculator(g,4,2);
         if (rb.calculate()) {
             g.printGraphToFile("inputGraph.txt");
             g.printVerticesToFile("graphRandom.txt");

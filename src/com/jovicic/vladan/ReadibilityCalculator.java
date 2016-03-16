@@ -56,4 +56,18 @@ public class ReadibilityCalculator {
             return false;
         }
     }
+    public boolean isReadibilityExactly(int r, boolean label)
+    {
+        rReadibilityCalc calc = new rReadibilityCalc(g, r);
+        if(calc.isrReadibility())
+        {
+            if(label)
+            {
+                g.setReadibility(r);
+                calc.setLabeling(g);
+            }
+            return true;
+        }
+        return false;
+    }
 }
