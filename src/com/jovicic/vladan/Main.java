@@ -14,7 +14,17 @@ public class Main {
     private static int exact = -1;
     public static void main(String [] args)
     {
-        g = choose();
+        g = new GridGraph(4,6).getGridGraph();
+        ReadibilityCalculator rb = new ReadibilityCalculator(g, 4,2);
+        if(rb.isReadibilityExactly(4,true))
+        {
+            g.printVerticesToFile("outputGraph.ou");
+        }
+        else
+        {
+            g.printGraphToFile("justgraph.in");
+        }
+        /*g = choose();
         if(g != null)
         {
             ReadibilityCalculator rb = new ReadibilityCalculator(g, 4, 2);
@@ -38,7 +48,7 @@ public class Main {
                     g.printGraphToFile(outputGraph);
                 }
             }
-        }
+        }*/
 
     }
 
