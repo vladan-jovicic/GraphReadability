@@ -1,8 +1,6 @@
 package com.jovicic.vladan;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * Created by vlada on 2/26/2016.
@@ -12,9 +10,10 @@ public class Main {
     private static Graph g;
     private static String outputGraph, outputVertices;
     private static int exact = -1;
+    private static BufferedWriter logWriter;
     public static void main(String [] args)
     {
-        g = new GridGraph(4,6).getGridGraph();
+        /*g = new GridGraph(4,6).getGridGraph();
         ReadibilityCalculator rb = new ReadibilityCalculator(g, 4,2);
         if(rb.isReadibilityExactly(4,true))
         {
@@ -23,6 +22,40 @@ public class Main {
         else
         {
             g.printGraphToFile("justgraph.in");
+        }*/
+        int cnt = 0;
+        boolean success = true;
+
+        try {
+            logWriter = new BufferedWriter(new FileWriter("logFile.log"));
+        } catch (IOException e)
+        {
+            //e.printStackTrace();
+            success = false;
+        }
+        if(success) {
+            for (int p = 10; p <= 90; p += 10) {
+                for (int i = 0; i < 2; i++) {
+                    g = new RandomGraph(16, p).getNewRandomGraph();
+                    ReadibilityCalculator rb = new ReadibilityCalculator(g, 6, 2);
+                    if (rb.calculate()) {
+                        g.printGraphToFile("InputGraph" + cnt + ".in");
+                        g.printVerticesToFile("OutputGraph" + cnt + ".out");
+                    }
+                    else
+                    {
+                        try
+                        {
+                            g.printGraphToFile("InputGraph" + cnt + ".in");
+                            logWriter.write("Not calculated for graph " + cnt + "\n");
+                        } catch (IOException e)
+                        {
+                            //jebi se
+                        }
+                    }
+                    cnt++;
+                }
+            }
         }
         /*g = choose();
         if(g != null)
