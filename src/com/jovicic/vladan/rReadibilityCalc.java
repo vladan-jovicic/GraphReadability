@@ -113,7 +113,7 @@ public class rReadibilityCalc {
         int thread_cnt = 0;
         int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
         int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
-        int exceptedNumOfThreads = (int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
+        int exceptedNumOfThreads = 1; //(int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
         threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
         latch = new CountDownLatch(exceptedNumOfThreads);
         int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
