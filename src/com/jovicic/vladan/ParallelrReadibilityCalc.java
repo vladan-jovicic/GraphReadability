@@ -69,7 +69,8 @@ public class ParallelrReadibilityCalc implements Runnable {
                                                     model.prod(1, xvar[u][q-g.n/2][i][l])),1);
                                         }catch (Exception e)
                                         {
-                                            System.out.println("Failed to add transitivity constraint");
+                                            e.printStackTrace();
+                                            //System.out.println("Failed to add transitivity constraint");
                                         }
                                     }
                                 }

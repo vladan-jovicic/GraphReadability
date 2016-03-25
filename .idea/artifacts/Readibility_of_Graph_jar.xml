@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Readibility of Graph:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Readibility_of_Graph_jar</output-path>
+    <root id="archive" name="Readibility of Graph.jar">
+      <element id="module-output" name="Readibility of Graph" />
+      <element id="extracted-dir" path="E:/Program Files/IBM/ILOG/CPLEX_Studio1261/cplex/lib/cplex.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
