@@ -109,7 +109,7 @@ public class rReadibilityCalc {
         System.out.println("Adding transitivity constraints");
 
 
-        int num_of_threads = Runtime.getRuntime().availableProcessors();
+        int num_of_threads = 1; //Runtime.getRuntime().availableProcessors();
         int thread_cnt = 0;
         int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
         int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
