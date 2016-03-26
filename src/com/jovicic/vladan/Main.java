@@ -24,7 +24,7 @@ public class Main {
         {
             //g.printGraphToFile("justgraph.in");
         }*/
-        int cnt = 0;
+        /*int cnt = 0;
         boolean success = true;
 
         try {
@@ -57,8 +57,8 @@ public class Main {
                     cnt++;
                 }
             }
-        }
-        /*g = choose();
+        }*/
+        g = choose();
         if(g != null)
         {
             ReadibilityCalculator rb = new ReadibilityCalculator(g, 4, 2);
@@ -82,7 +82,7 @@ public class Main {
                     g.printGraphToFile(outputGraph);
                 }
             }
-        }*/
+        }
 
     }
 

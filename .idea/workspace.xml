@@ -7,10 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d53d8f3e-a199-4060-b5ac-7b85a7f503ac" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jovicic/vladan/Main.java" afterPath="$PROJECT_DIR$/src/com/jovicic/vladan/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jovicic/vladan/ParallelrReadibilityCalc.java" afterPath="$PROJECT_DIR$/src/com/jovicic/vladan/ParallelrReadibilityCalc.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java" afterPath="$PROJECT_DIR$/src/com/jovicic/vladan/rReadibilityCalc.java" />
     </list>
     <ignored path="Readibility of Graph.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,8 +32,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0109546">
-              <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.7183099">
+              <caret line="84" column="9" selection-start-line="84" selection-start-column="9" selection-end-line="84" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -1068,8 +1065,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jovicic/vladan/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0109546">
-          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.7183099">
+          <caret line="84" column="9" selection-start-line="84" selection-start-column="9" selection-end-line="84" selection-end-column="9" />
           <folding />
         </state>
       </provider>
