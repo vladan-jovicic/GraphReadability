@@ -1,6 +1,8 @@
 package com.jovicic.vladan;
 
 import ilog.concert.IloIntVar;
+import ilog.concert.IloNumExpr;
+import ilog.concert.IloRange;
 import ilog.cplex.IloCplex;
 
 import java.util.Vector;
@@ -67,6 +69,7 @@ public class ParallelrReadibilityCalc implements Runnable {
                                             model.addGe(model.sum(model.constant(3), model.prod(-1, xvar[u][v-g.n/2][i][j]),
                                                     model.prod(-1, xvar[w][v-g.n/2][k][j]), model.prod(-1, xvar[w][q-g.n/2][k][l]),
                                                     model.prod(1, xvar[u][q-g.n/2][i][l])),1);
+                                            //model.addLazyConstraint(new IloNumExpr());
                                         }catch (Exception e)
                                         {
                                             e.printStackTrace();
