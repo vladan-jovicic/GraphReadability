@@ -13,17 +13,17 @@ public class Main {
     private static BufferedWriter logWriter;
     public static void main(String [] args)
     {
-        /*g = new GridGraph(4,6).getGridGraph();
+        g = new GridGraph(6,6).getGridGraph();
         ReadibilityCalculator rb = new ReadibilityCalculator(g, 4,2);
         if(rb.isReadibilityExactly(3,true))
         {
             System.out.println("Bice da radi");
-            //g.printVerticesToFile("outputGraph.ou");
+            g.printVerticesToFile("outputGraph.out");
         }
         else
         {
             //g.printGraphToFile("justgraph.in");
-        }*/
+        }
         /*int cnt = 0;
         boolean success = true;
 
@@ -58,7 +58,7 @@ public class Main {
                 }
             }
         }*/
-        g = choose();
+        /*g = choose();
         if(g != null)
         {
             ReadibilityCalculator rb = new ReadibilityCalculator(g, 4, 2);
@@ -82,7 +82,7 @@ public class Main {
                     g.printGraphToFile(outputGraph);
                 }
             }
-        }
+        }*/
 
     }
 
