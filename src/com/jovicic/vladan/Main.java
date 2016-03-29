@@ -11,9 +11,10 @@ public class Main {
     private static String outputGraph, outputVertices;
     private static int exact = -1;
     private static BufferedWriter logWriter;
+    private static BufferedReader in;
     public static void main(String [] args)
     {
-        g = new GridGraph(6,6).getGridGraph();
+        /*g = new GridGraph(4,4).getGridGraph();
         ReadibilityCalculator rb = new ReadibilityCalculator(g, 4,2);
         if(rb.isReadibilityExactly(3,true))
         {
@@ -23,66 +24,48 @@ public class Main {
         else
         {
             //g.printGraphToFile("justgraph.in");
-        }
-        /*int cnt = 0;
+        }*/
+        int cnt = 0;
+
         boolean success = true;
 
         try {
             logWriter = new BufferedWriter(new FileWriter("logFile.log"));
+            in = new BufferedReader(new FileReader("test/StartIndex.txt"));
+            cnt = Integer.parseInt(in.readLine());
         } catch (IOException e)
         {
             //e.printStackTrace();
             success = false;
         }
         if(success) {
-            for (int p = 10; p <= 90; p += 10) {
-                for (int i = 0; i < 2; i++) {
-                    g = new RandomGraph(16, p).getNewRandomGraph();
-                    ReadibilityCalculator rb = new ReadibilityCalculator(g, 6, 2);
-                    if (rb.calculate()) {
-                        g.printGraphToFile("InputGraph" + cnt + ".in");
-                        g.printVerticesToFile("OutputGraph" + cnt + ".out");
-                    }
-                    else
+            for(int i = cnt; i<18; i++)
+            {
+                g = new Graph();
+                g.readGraphFromFile("test/RandomGraph"+i+".in");
+                ReadibilityCalculator rb = new ReadibilityCalculator(g, 6, 2);
+                if(rb.calculate())
+                {
+                    g.printVerticesToFile("OutPutGraph"+i+".out");
+                }
+                else
+                {
+                    try {
+                        logWriter.write("Couldnt calculate for graph " + i);
+                    } catch (IOException e)
                     {
-                        try
-                        {
-                            g.printGraphToFile("InputGraph" + cnt + ".in");
-                            logWriter.write("Not calculated for graph " + cnt + "\n");
-                        } catch (IOException e)
-                        {
-                            //jebi se
-                        }
+                        e.printStackTrace();
                     }
-                    cnt++;
                 }
             }
-        }*/
-        /*g = choose();
-        if(g != null)
+        }
+        try {
+            logWriter.close();
+            in.close();
+        } catch (IOException e)
         {
-            ReadibilityCalculator rb = new ReadibilityCalculator(g, 4, 2);
-            if(exact > 1)
-            {
-                if(rb.isReadibilityExactly(exact, true))
-                {
-                    g.printVerticesToFile(outputVertices);
-                    if(outputGraph != null && outputGraph != "")
-                    {
-                        g.printGraphToFile(outputGraph);
-                    }
-                }
-            }
-            else
-            {
-                rb.calculate();
-                g.printVerticesToFile(outputVertices);
-                if(outputGraph != null && outputGraph != "")
-                {
-                    g.printGraphToFile(outputGraph);
-                }
-            }
-        }*/
+            e.printStackTrace();
+        }
 
     }
 

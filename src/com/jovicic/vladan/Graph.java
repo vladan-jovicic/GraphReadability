@@ -1,8 +1,6 @@
 package com.jovicic.vladan;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Vector;
 
 /**
@@ -16,6 +14,11 @@ public class Graph {
     private int readibility;
     private int [][] label;
     public int eSize;
+
+    public Graph ()
+    {
+
+    }
 
     public Graph (int nn)
     {
@@ -104,6 +107,7 @@ public class Graph {
     {
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filename));
+            out.write(n+" "+edges.size()+"\n");
             for (int u = 0; u < n / 2; u++) {
                 for (int v = n / 2; v < n; v++) {
                     if (adjMatrix[u][v])
@@ -115,6 +119,28 @@ public class Graph {
         }catch (Exception e)
         {
             System.out.println("Failed to print");
+        }
+    }
+
+    public void readGraphFromFile(String filename)
+    {
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(filename));
+            String [] read = in.readLine().split(" ");
+            n = Integer.parseInt(read[0]);
+            int m = Integer.parseInt(read[1]);
+            edges = new Vector<Par>();
+            adjMatrix = new boolean[n][n];
+            label = new int[n][];
+            eSize = 0;
+            for (int i=0; i<m; i++)
+            {
+                read = in.readLine().split(" ");
+                addEdge(Integer.parseInt(read[0]), Integer.parseInt(read[1]));
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }
