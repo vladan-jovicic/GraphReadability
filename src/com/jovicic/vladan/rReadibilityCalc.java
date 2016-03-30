@@ -156,7 +156,7 @@ public class rReadibilityCalc {
             System.out.println("Calculation finished! Trying to solve a model ....");
             //IloCplex.Algorithm model1 = new IloCplex.Algorithm(IloCplex.Algorithm.Dual);
             //IloCplex.Algorithm alg = new IloCplex.Algorithm(IloCplex.Algorithm.Primal);
-            model.setParam(IloCplex.IntParam.RootAlg, IloCplex.Algorithm.Barrier);
+            //model.setParam(IloCplex.IntParam.RootAlg, IloCplex.Algorithm.Barrier);
             //System.out.println(model.getAlgorithm());
             model.solve();
             if(model.getStatus() == IloCplex.Status.Optimal)
