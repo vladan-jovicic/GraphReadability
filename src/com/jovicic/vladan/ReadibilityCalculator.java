@@ -34,17 +34,23 @@ public class ReadibilityCalculator {
             int mid = (lo+hi)/2;
             System.out.println("Provjeravam za "+mid);
             calc = new rReadibilityCalc(g, mid);
-            if(calc.isrReadibility())
+            int result = calc.isrReadibility();
+            if(result == 1)
             {
                 hi = mid;
             }
+            else if(result == 0)
+            {
+                lo = mid+1;
+            }
             else
             {
+                //probably not
                 lo = mid+1;
             }
         }
         calc = new rReadibilityCalc(g, hi);
-        if (calc.isrReadibility())
+        if (calc.isrReadibility() == 1)
         {
             //nasao sam ga
             g.setReadibility(hi);
@@ -59,7 +65,7 @@ public class ReadibilityCalculator {
     public boolean isReadibilityExactly(int r, boolean label)
     {
         rReadibilityCalc calc = new rReadibilityCalc(g, r);
-        if(calc.isrReadibility())
+        if(calc.isrReadibility() == 1)
         {
             if(label)
             {

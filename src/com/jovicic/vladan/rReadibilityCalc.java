@@ -47,7 +47,7 @@ public class rReadibilityCalc {
             e.printStackTrace();
         }
     }
-    public boolean isrReadibility()
+    public int isrReadibility()
     {
         int eCnt = 0;
         for(int u=0; u<g.n/2; u++)
@@ -157,6 +157,7 @@ public class rReadibilityCalc {
             //IloCplex.Algorithm model1 = new IloCplex.Algorithm(IloCplex.Algorithm.Dual);
             //IloCplex.Algorithm alg = new IloCplex.Algorithm(IloCplex.Algorithm.Primal);
             //model.setParam(IloCplex.IntParam.RootAlg, IloCplex.Algorithm.Barrier);
+            model.setParam(IloCplex.IntParam.NodeLim, 15);
             //System.out.println(model.getAlgorithm());
             model.solve();
             if(model.getStatus() == IloCplex.Status.Optimal)
@@ -182,12 +183,16 @@ public class rReadibilityCalc {
                     }
                 }
                 System.out.println("Graph has readibility " + r); //tu jos treba da ispitas koji su jednaki
-                return true;
+                return 1;
             }
             else if(model.getStatus() == IloCplex.Status.Infeasible)
             {
                 System.out.println("Graph has no readibility " + r);
-                return false;
+                return 0;
+            }
+            else
+            {
+                return -1;
             }
         } catch (Exception e)
         {
@@ -195,7 +200,7 @@ public class rReadibilityCalc {
             System.out.println("Failed in solving model!");
         }
         model.end();
-        return false;
+        return -1;
     }
 
     public Vector<Tuple> getTuples ()
