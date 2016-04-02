@@ -14,18 +14,19 @@ public class Main {
     private static BufferedReader in;
     public static void main(String [] args)
     {
-        /*g = new GridGraph(4,4).getGridGraph();
+        g = new RandomGraph(30, 50).getNewRandomGraph();
         ReadibilityCalculator rb = new ReadibilityCalculator(g, 4,2);
-        if(rb.isReadibilityExactly(3,true))
+        if(rb.isReadibilityExactly(3,false))
         {
             System.out.println("Bice da radi");
-            g.printVerticesToFile("outputGraph.out");
+            //g.printVerticesToFile("outputGraph.out");
         }
         else
         {
             //g.printGraphToFile("justgraph.in");
-        }*/
-        int cnt = 0;
+            System.out.println("Ne radi :(");
+        }
+        /*int cnt = 0;
 
         boolean success = true;
 
@@ -65,7 +66,7 @@ public class Main {
         } catch (IOException e)
         {
             e.printStackTrace();
-        }
+        }*/
 
     }
 

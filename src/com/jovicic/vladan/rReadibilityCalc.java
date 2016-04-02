@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 public class rReadibilityCalc {
 
     private Graph g;
-    public IloIntVar [][][][] xvar;
+    public IloIntVar [][] xvar;
     private int r;
     private IloIntVar [][] zvar;
     public IloCplex model;
@@ -24,21 +24,24 @@ public class rReadibilityCalc {
     {
         this.r = rr;
         g = gg;
-        xvar = new IloIntVar[g.n/2][g.n/2][r+1][];
+        xvar = new IloIntVar[g.n][];
         zvar = new IloIntVar[g.eSize][];
         try {
             model = new IloCplex();
             model.addMaximize(model.constant(1));
-            for (int u = 0; u < g.n/2; u++) {
-                for (int v = 0; v < g.n/2; v++) {
-                    for (int i = 0; i <= r; i++) {
-                        xvar[u][v][i] = model.boolVarArray(r+1);
-                    }
-                }
+            int [] lowerBound = new int[rr+1];
+            int [] upperBound = new int[rr+1];
+            for(int i=0; i<=rr; i++)
+            {
+                lowerBound[i] = 0;
+                upperBound[i] = 100;
+            }
+            for (int u = 0; u < g.n; u++) {
+                        xvar[u] = model.intVarArray(r+1, lowerBound, upperBound); //size of array, lower bound upper bound
             }
             for(int i=0; i<g.eSize; i++)
             {
-                zvar[i] = model.boolVarArray(r+1);
+                zvar[i] = model.intVarArray(r+1, lowerBound, upperBound);
             }
         }
         catch (Exception e)
@@ -59,23 +62,25 @@ public class rReadibilityCalc {
                     //System.out.println("Dodajem za povezavu " + u + "," + v);
                     //model.addGe(asdas, 1);
                     try {
-                        IloLinearIntExpr expr = model.linearIntExpr();
-                        //sad za svaku poziciju i=r ... 1
-                        for(int i=r; i>=1; i--)
+                        IloLinearNumExpr expr = model.linearNumExpr();
+
+                        //dodam z_e1 + z_e2 + ... + z_er > 0
+                        for(int i=1; i<=r; i++)
                         {
-                            //dodaj sve varijable
                             expr.addTerm(1, zvar[eCnt][i]);
-                            IloLinearIntExpr expr1 = model.linearIntExpr();
-                            int othSide = 1;
-                            for(int j=i; j>=1; j--)
+                            int sumCnt = 0;
+                            IloIntExpr [] eSum = new IloIntExpr[r-i+1];
+                            for(int k=i; k<=r; k++)
                             {
-                                //xvars[u][v][r-j+1][j]
-                                expr1.addTerm(1, xvar[u][v-g.n/2][r-j+1][othSide++]);
+                                ////sum_{k=i}^{r}{(x[u][k]-x[v][k-i+1])^2}+1 > 0
+                                //i i k su mi fiksni
+                                eSum[sumCnt++] = model.prod(model.diff(xvar[u][k], xvar[v][k-i+1]),  model.diff(xvar[u][k], xvar[v][k-i+1]));
+                                model.addEq(model.sum(model.prod(zvar[eCnt][i],xvar[u][k]),model.prod(-1, model.prod(zvar[eCnt][i],xvar[v][k-i+1]))),0);
                             }
-                            model.addGe(model.sum(expr1,model.prod(-i, zvar[eCnt][i])),0);
+                            model.addGe(model.sum(zvar[eCnt][i], model.sum(eSum)),1);
                         }
-                        eCnt++;
                         model.addGe(expr, 1);
+                        eCnt++;
                     } catch (Exception e)
                     {
                         System.out.println("Failed to initialize linear expression");
@@ -90,13 +95,13 @@ public class rReadibilityCalc {
                     try {
                         for (int i = r; i >= 1; i--) //za svaku poziciju
                         {
-                            IloLinearIntExpr expr = model.linearIntExpr();
-                            int othSide = 1;
-                            for(int j = i; j>= 1; j--)
+                            IloIntExpr [] eSum = new IloIntExpr[r-i+1];
+                            int sumCnt = 0;
+                            for(int k=i; k<=r; k++)
                             {
-                                expr.addTerm(-1, xvar[u][v-g.n/2][r-j+1][othSide++]);
+                                eSum[sumCnt++] = model.prod(model.diff(xvar[u][k], xvar[v][k-i+1]),  model.diff(xvar[u][k], xvar[v][k-i+1]));
                             }
-                            model.addGe(model.sum(model.constant(i), expr), 1);
+                            model.addGe(model.sum(eSum), 1);
                         }
                     } catch (Exception e)
                     {
@@ -106,84 +111,17 @@ public class rReadibilityCalc {
                 }
             }
         }
-        System.out.println("Adding transitivity constraints");
 
-
-        int num_of_threads = 1; //Runtime.getRuntime().availableProcessors();
-        int thread_cnt = 0;
-        int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
-        int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
-        int exceptedNumOfThreads = 1; //(int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
-        threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
-        latch = new CountDownLatch(exceptedNumOfThreads);
-        int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
-        //System.out.println("num of threads: " + n);
-        //jos pogledaj za neperfektno dijeljenje
-        for(int left = 0; left<fourthRoot; left++)
+        try
         {
-            for(int right = 0; right<fourthRoot; right++)
-            {
-                for(int i=0; i<fourthRoot; i++)
-                {
-                    for(int j=0; j<fourthRoot; j++)
-                    {
-                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
-                                new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
-                                new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*num_of_threads},
-                                new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
-                                new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch);
-                        //threads[thread_cnt-1].run();
-                    }
-                }
-            }
-        } // pretpostavimo da ovo gore radi xD
-
-        System.out.println("Running threads up to " + exceptedNumOfThreads + " threads");
-        if(exceptedNumOfThreads == thread_cnt)
-        {
-            for(int i=0; i<exceptedNumOfThreads; i++)
-                threads[i].run();
-        }
-        else
-            System.out.println("... parallel programming");
-        try {
-            latch.await();
-        } catch (InterruptedException e)
-        {
-            System.out.println("Failed .....");
-        }
-        try {
             System.out.println("Calculation finished! Trying to solve a model ....");
-            //IloCplex.Algorithm model1 = new IloCplex.Algorithm(IloCplex.Algorithm.Dual);
-            //IloCplex.Algorithm alg = new IloCplex.Algorithm(IloCplex.Algorithm.Primal);
-            //model.setParam(IloCplex.IntParam.RootAlg, IloCplex.Algorithm.Barrier);
-            model.setParam(IloCplex.IntParam.NodeLim, 15);
+            //model.setParam(IloCplex.IntParam.RootAlg, IloCplex.Algorithm.Auto);
+            //model.setParam(IloCplex.IntParam.NodeLim, 15);
             //System.out.println(model.getAlgorithm());
             model.solve();
             if(model.getStatus() == IloCplex.Status.Optimal)
             {
-                tuples = new Vector<Tuple>();
-                for(int u=0; u<g.n/2; u++)
-                {
-                    for(int v = g.n/2; v < g.n; v++)
-                    {
-                        for(int i=1; i<=r; i++)
-                        {
-                            for(int j=1; j<=r; j++)
-                            {
-                                //System.out.println(model.getValue(xvar[u][v][i][j]));
-                                if(model.getValue(xvar[u][v-g.n/2][i][j]) == 1)
-                                {
-                                    Tuple t = new Tuple(4);
-                                    t.setTouple(new int[] {u,v,i,j});
-                                    tuples.add(t);
-                                }
-                            }
-                        }
-                    }
-                }
-                System.out.println("Graph has readibility " + r); //tu jos treba da ispitas koji su jednaki
-                return 1;
+                return  1;
             }
             else if(model.getStatus() == IloCplex.Status.Infeasible)
             {
