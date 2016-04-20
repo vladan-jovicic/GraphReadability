@@ -28,12 +28,13 @@ public class Main {
             //g.printGraphToFile("justgraph.in");
         }*/
         //String inputFile, outputFile;
-        Graph g = new Graph();
-        g.readGraphFromFile("Hadamard.in");
+        GridGraph gg = new GridGraph(6,6);
+        Graph g = gg.getGridGraph();
+        //g.readGraphFromFile("Hadamard4.in");
         outputVertices = "Hadamard.out";
         if(exact == -1)
         {
-            ReadibilityCalculator rb = new ReadibilityCalculator(g, 5, 2);
+            ReadibilityCalculator rb = new ReadibilityCalculator(g, 6, 3);
             if(rb.calculate())
             {
                 g.printVerticesToFile(outputVertices);

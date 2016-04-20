@@ -12,9 +12,9 @@ import java.util.regex.Matcher;
 public class rReadibilityCalc {
 
     private Graph g;
-    public IloIntVar [][][][] xvar;
+    public IloNumVar [][][][] xvar;
     private int r;
-    private IloIntVar [][] zvar;
+    private IloNumVar [][] zvar;
     public IloCplex model;
     private Vector<Tuple> tuples;
     private ParallelrReadibilityCalc [] threads;
@@ -24,21 +24,21 @@ public class rReadibilityCalc {
     {
         this.r = rr;
         g = gg;
-        xvar = new IloIntVar[g.n/2][g.n/2][r+1][];
-        zvar = new IloIntVar[g.eSize][];
+        xvar = new IloNumVar[g.n/2][g.n/2][r+1][];
+        zvar = new IloNumVar[g.eSize][];
         try {
             model = new IloCplex();
             model.addMaximize(model.constant(1));
             for (int u = 0; u < g.n/2; u++) {
                 for (int v = 0; v < g.n/2; v++) {
                     for (int i = 0; i <= r; i++) {
-                        xvar[u][v][i] = model.boolVarArray(r+1);
+                        xvar[u][v][i] = model.numVarArray(r+1, 0, 1);
                     }
                 }
             }
             for(int i=0; i<g.eSize; i++)
             {
-                zvar[i] = model.boolVarArray(r+1);
+                zvar[i] = model.numVarArray(r+1, 0, 1);
             }
         }
         catch (Exception e)
@@ -59,13 +59,13 @@ public class rReadibilityCalc {
                     //System.out.println("Dodajem za povezavu " + u + "," + v);
                     //model.addGe(asdas, 1);
                     try {
-                        IloLinearIntExpr expr = model.linearIntExpr();
+                        IloLinearNumExpr expr = model.linearNumExpr();
                         //sad za svaku poziciju i=r ... 1
                         for(int i=r; i>=1; i--)
                         {
                             //dodaj sve varijable
                             expr.addTerm(1, zvar[eCnt][i]);
-                            IloLinearIntExpr expr1 = model.linearIntExpr();
+                            IloLinearNumExpr expr1 = model.linearNumExpr();
                             int othSide = 1;
                             for(int j=i; j>=1; j--)
                             {
@@ -90,7 +90,7 @@ public class rReadibilityCalc {
                     try {
                         for (int i = r; i >= 1; i--) //za svaku poziciju
                         {
-                            IloLinearIntExpr expr = model.linearIntExpr();
+                            IloLinearNumExpr expr = model.linearNumExpr();
                             int othSide = 1;
                             for(int j = i; j>= 1; j--)
                             {
@@ -109,11 +109,11 @@ public class rReadibilityCalc {
         System.out.println("Adding transitivity constraints");
 
 
-        int num_of_threads = 1; //Runtime.getRuntime().availableProcessors();
+        int num_of_threads = Runtime.getRuntime().availableProcessors();
         int thread_cnt = 0;
         int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
         int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
-        int exceptedNumOfThreads = 1; //(int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
+        int exceptedNumOfThreads = (int)Math.sqrt(Math.sqrt(num_of_threads));
         threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
         latch = new CountDownLatch(exceptedNumOfThreads);
         int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
@@ -162,7 +162,7 @@ public class rReadibilityCalc {
             model.solve();
             if(model.getStatus() == IloCplex.Status.Optimal)
             {
-                tuples = new Vector<Tuple>();
+                /*tuples = new Vector<Tuple>();
                 for(int u=0; u<g.n/2; u++)
                 {
                     for(int v = g.n/2; v < g.n; v++)
@@ -183,6 +183,8 @@ public class rReadibilityCalc {
                     }
                 }
                 System.out.println("Graph has readibility " + r); //tu jos treba da ispitas koji su jednaki
+                return 1;*/
+                System.out.println("Izracunao sam");
                 return 1;
             }
             else if(model.getStatus() == IloCplex.Status.Infeasible)

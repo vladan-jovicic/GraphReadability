@@ -53,8 +53,9 @@ public class ReadibilityCalculator {
         if (calc.isrReadibility() == 1)
         {
             //nasao sam ga
-            g.setReadibility(hi);
-            calc.setLabeling(g);
+            System.out.println("Lower bound: " + hi);
+            //g.setReadibility(hi);
+            //calc.setLabeling(g);
             return true;
         }
         else

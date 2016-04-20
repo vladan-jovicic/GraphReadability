@@ -2,6 +2,7 @@ package com.jovicic.vladan;
 
 import ilog.concert.IloIntVar;
 import ilog.concert.IloNumExpr;
+import ilog.concert.IloNumVar;
 import ilog.concert.IloRange;
 import ilog.cplex.IloCplex;
 
@@ -14,9 +15,9 @@ import java.util.concurrent.CountDownLatch;
 public class ParallelrReadibilityCalc implements Runnable {
 
     private Graph g;
-    private IloIntVar[][][][] xvar;
+    private IloNumVar[][][][] xvar;
     private int r;
-    private IloIntVar [][] zvar;
+    private IloNumVar [][] zvar;
     private IloCplex model;
     private Vector<Tuple> tuples;
     //private int lnstart, lnend, rnstart, rnend, rstart, rend;
@@ -24,7 +25,7 @@ public class ParallelrReadibilityCalc implements Runnable {
     private char type = 'T';
     private CountDownLatch latch;
 
-    public ParallelrReadibilityCalc(Graph gg, int rr, IloIntVar[][][][] xtvar, IloCplex mmodel, int [] lncoord, int [] rncoord, int [] lrcoord, int [] rrcoord, CountDownLatch bar)
+    public ParallelrReadibilityCalc(Graph gg, int rr, IloNumVar[][][][] xtvar, IloCplex mmodel, int [] lncoord, int [] rncoord, int [] lrcoord, int [] rrcoord, CountDownLatch bar)
     {
         g = gg;
         r = rr;
