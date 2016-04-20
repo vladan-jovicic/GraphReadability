@@ -1,5 +1,7 @@
 package com.jovicic.vladan;
 
+import ilog.cplex.IloCplex;
+
 import java.io.*;
 
 /**
@@ -25,7 +27,21 @@ public class Main {
         {
             //g.printGraphToFile("justgraph.in");
         }*/
-        int cnt = 0;
+        String inputFile, outputFile;
+        Graph g = choose();
+        if(exact == -1)
+        {
+            ReadibilityCalculator rb = new ReadibilityCalculator(g, 5, 2);
+            if(rb.calculate())
+            {
+                g.printVerticesToFile(outputVertices);
+            }
+            else
+            {
+                System.out.println("WTF!!!");
+            }
+        }
+        /*int cnt = 0;
 
         boolean success = true;
 
@@ -65,7 +81,7 @@ public class Main {
         } catch (IOException e)
         {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -96,6 +112,12 @@ public class Main {
                 int h = Integer.parseInt(in.readLine());
                 g = new GridGraph(w,h).getGridGraph();
                 //return g;
+            }
+            else if(c == 3)
+            {
+                String inputFile = in.readLine();
+                g = new Graph();
+                g.readGraphFromFile(inputFile);
             }
             else
             {
