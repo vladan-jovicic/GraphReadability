@@ -27,8 +27,10 @@ public class Main {
         {
             //g.printGraphToFile("justgraph.in");
         }*/
-        String inputFile, outputFile;
-        Graph g = choose();
+        //String inputFile, outputFile;
+        Graph g = new Graph();
+        g.readGraphFromFile("Hadamard.in");
+        outputVertices = "Hadamard.out";
         if(exact == -1)
         {
             ReadibilityCalculator rb = new ReadibilityCalculator(g, 5, 2);
