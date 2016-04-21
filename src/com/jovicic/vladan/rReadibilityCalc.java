@@ -173,9 +173,9 @@ public class rReadibilityCalc {
                                 //System.out.println(model.getValue(xvar[u][v][i][j]));
                                 if(model.getValue(xvar[u][v-g.n/2][i][j]) == 1)
                                 {
-                                    //Tuple t = new Tuple(4);
-                                    //t.setTouple(new int[] {u,v,i,j});
-                                    //tuples.add(t);
+                                    Tuple t = new Tuple(4);
+                                    t.setTouple(new int[] {u,v,i,j});
+                                    tuples.add(t);
                                 }
                             }
                         }
@@ -205,6 +205,7 @@ public class rReadibilityCalc {
     public void setLabeling(Graph g)
     {
         g.setReadability(r);
+        System.out.println("Postavljam");
         char current = 'a';
         for(int i=0; i<tuples.size(); i++)
         {

@@ -13,11 +13,14 @@ public class Main {
     private static BufferedWriter logWriter;
     public static void main(String [] args)
     {
-        Graph g = new GridGraph(4,6).getGridGraph();
+        //Graph g = new GridGraph(3,4).getGridGraph();
+        Graph g = new Graph();
+        g.readGraphFromFile("inputGraph.in");
         ReadibilityCalculator rb = new ReadibilityCalculator(g, 4, 2);
         if(rb.calculate())
         {
             System.out.println("Izracunao");
+            g.printVerticesToFile("output.out");
         }
         else
         {

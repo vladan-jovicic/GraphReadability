@@ -47,6 +47,7 @@ public class ReadibilityCalculator {
             if(result == 1)
             {
                 found[mid] = true;
+                calc.setLabeling(g);
                 hi = mid-1;
             }
             else if(result == 0)
@@ -79,8 +80,6 @@ public class ReadibilityCalculator {
             {
                 isInterval = true;
                 //g.setReadability(i);
-                /*if(calc != null)
-                    calc.setLabeling(g);*/
                 System.out.println("Graph has radability " + i);
                 break;
             }
