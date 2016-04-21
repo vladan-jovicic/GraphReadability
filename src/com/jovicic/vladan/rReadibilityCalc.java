@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 public class rReadibilityCalc {
 
     private Graph g;
-    public IloIntVar [][][][] xvar;
+    public IloNumVar [][][][] xvar;
     private int r;
     private IloIntVar [][] zvar;
     public IloCplex model;
@@ -24,7 +24,7 @@ public class rReadibilityCalc {
     {
         this.r = rr;
         g = gg;
-        xvar = new IloIntVar[g.n/2][g.n/2][r+1][];
+        xvar = new IloNumVar[g.n/2][g.n/2][r+1][];
         zvar = new IloIntVar[g.eSize][];
         try {
             model = new IloCplex();
@@ -47,9 +47,53 @@ public class rReadibilityCalc {
             e.printStackTrace();
         }
     }
-    public boolean isrReadibility()
+    public int isrReadibility()
     {
         int eCnt = 0;
+        System.out.println("Adding transitivity constraints");
+        int num_of_threads = Runtime.getRuntime().availableProcessors();
+        int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
+        int thread_cnt = 0;
+        int numOfVer = g.n/(2*fourthRoot);
+        int sizeOfVer = r/fourthRoot;
+        int exceptedNumOfThreads = (int)Math.pow(fourthRoot, 4);
+        threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
+        latch = new CountDownLatch(exceptedNumOfThreads);
+
+        //System.out.println("num of threads: " + n);
+        //jos pogledaj za neperfektno dijeljenje
+        for(int left = 0; left<fourthRoot; left++)
+        {
+            for(int right = 0; right<fourthRoot; right++)
+            {
+                for(int i=0; i<fourthRoot; i++)
+                {
+                    for(int j=0; j<fourthRoot; j++)
+                    {
+                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
+                                new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
+                                new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*numOfVer},
+                                new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
+                                new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch);
+                        //threads[thread_cnt-1].run();
+                    }
+                }
+            }
+        } // pretpostavimo da ovo gore radi xD
+        System.out.println("Running up to " + exceptedNumOfThreads + " threads");
+        if(exceptedNumOfThreads == thread_cnt)
+        {
+            for(int i=0; i<exceptedNumOfThreads; i++)
+                threads[i].run();
+        }
+        else
+            System.out.println("... parallel programming");
+        try {
+            latch.await();
+        } catch (InterruptedException e)
+        {
+            System.out.println("Failed .....");
+        }
         for(int u=0; u<g.n/2; u++)
         {
             for(int v = g.n/2; v<g.n; v++)
@@ -59,13 +103,13 @@ public class rReadibilityCalc {
                     //System.out.println("Dodajem za povezavu " + u + "," + v);
                     //model.addGe(asdas, 1);
                     try {
-                        IloLinearIntExpr expr = model.linearIntExpr();
+                        IloLinearNumExpr expr = model.linearNumExpr();
                         //sad za svaku poziciju i=r ... 1
                         for(int i=r; i>=1; i--)
                         {
                             //dodaj sve varijable
                             expr.addTerm(1, zvar[eCnt][i]);
-                            IloLinearIntExpr expr1 = model.linearIntExpr();
+                            IloLinearNumExpr expr1 = model.linearNumExpr();
                             int othSide = 1;
                             for(int j=i; j>=1; j--)
                             {
@@ -90,7 +134,7 @@ public class rReadibilityCalc {
                     try {
                         for (int i = r; i >= 1; i--) //za svaku poziciju
                         {
-                            IloLinearIntExpr expr = model.linearIntExpr();
+                            IloLinearNumExpr expr = model.linearNumExpr();
                             int othSide = 1;
                             for(int j = i; j>= 1; j--)
                             {
@@ -106,52 +150,12 @@ public class rReadibilityCalc {
                 }
             }
         }
-        System.out.println("Adding transitivity constraints");
 
 
-        int num_of_threads = 1; //Runtime.getRuntime().availableProcessors();
-        int thread_cnt = 0;
-        int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
-        int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
-        int exceptedNumOfThreads = 1; //(int)Math.pow((int)Math.sqrt(Math.sqrt(num_of_threads)),4);
-        threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
-        latch = new CountDownLatch(exceptedNumOfThreads);
-        int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
-        //System.out.println("num of threads: " + n);
-        //jos pogledaj za neperfektno dijeljenje
-        for(int left = 0; left<fourthRoot; left++)
-        {
-            for(int right = 0; right<fourthRoot; right++)
-            {
-                for(int i=0; i<fourthRoot; i++)
-                {
-                    for(int j=0; j<fourthRoot; j++)
-                    {
-                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
-                                new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
-                                new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*num_of_threads},
-                                new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
-                                new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch);
-                        //threads[thread_cnt-1].run();
-                    }
-                }
-            }
-        } // pretpostavimo da ovo gore radi xD
 
-        System.out.println("Running threads up to " + exceptedNumOfThreads + " threads");
-        if(exceptedNumOfThreads == thread_cnt)
-        {
-            for(int i=0; i<exceptedNumOfThreads; i++)
-                threads[i].run();
-        }
-        else
-            System.out.println("... parallel programming");
-        try {
-            latch.await();
-        } catch (InterruptedException e)
-        {
-            System.out.println("Failed .....");
-        }
+
+
+
         try {
             System.out.println("Calculation finished! Trying to solve a model ....");
             model.solve();
@@ -169,28 +173,29 @@ public class rReadibilityCalc {
                                 //System.out.println(model.getValue(xvar[u][v][i][j]));
                                 if(model.getValue(xvar[u][v-g.n/2][i][j]) == 1)
                                 {
-                                    Tuple t = new Tuple(4);
-                                    t.setTouple(new int[] {u,v,i,j});
-                                    tuples.add(t);
+                                    //Tuple t = new Tuple(4);
+                                    //t.setTouple(new int[] {u,v,i,j});
+                                    //tuples.add(t);
                                 }
                             }
                         }
                     }
                 }
                 System.out.println("Graph has readibility " + r); //tu jos treba da ispitas koji su jednaki
-                return true;
+                return 1;
             }
             else if(model.getStatus() == IloCplex.Status.Infeasible)
             {
                 System.out.println("Graph has no readibility " + r);
-                return false;
+                return 0;
             }
         } catch (Exception e)
         {
             e.printStackTrace();
             System.out.println("Failed in solving model!");
+            return -1;
         }
-        return false;
+        return -1;
     }
 
     public Vector<Tuple> getTuples ()
@@ -199,7 +204,7 @@ public class rReadibilityCalc {
     }
     public void setLabeling(Graph g)
     {
-        g.setReadibility(r);
+        g.setReadability(r);
         char current = 'a';
         for(int i=0; i<tuples.size(); i++)
         {

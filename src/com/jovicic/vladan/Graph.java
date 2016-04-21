@@ -32,7 +32,7 @@ public class Graph {
         adjMatrix[u][v] = true;
         eSize++;
     }
-    public void setReadibility(int r)
+    public void setReadability(int r)
     {
         readibility = r;
         for(int i=0; i<n; i++)
