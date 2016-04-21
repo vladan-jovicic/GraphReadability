@@ -27,17 +27,22 @@ public class Main {
         {
             //g.printGraphToFile("justgraph.in");
         }*/
-        //String inputFile, outputFile;
+        String inputFile;
+        if(args.length < 2)
+        {
+            System.out.println("Input file not specified");
+        }
+        inputFile = args[1];
         GridGraph gg = new GridGraph(6,6);
-        Graph g = gg.getGridGraph();
-        //g.readGraphFromFile("Hadamard4.in");
+        Graph g = new Graph();
+        g.readGraphFromFile(inputFile);
         outputVertices = "Hadamard.out";
         if(exact == -1)
         {
             ReadibilityCalculator rb = new ReadibilityCalculator(g, 6, 3);
             if(rb.calculate())
             {
-                g.printVerticesToFile(outputVertices);
+                //g.printVerticesToFile(outputVertices);
             }
             else
             {

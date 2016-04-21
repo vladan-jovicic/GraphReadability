@@ -110,13 +110,14 @@ public class rReadibilityCalc {
 
 
         int num_of_threads = Runtime.getRuntime().availableProcessors();
+        int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
         int thread_cnt = 0;
-        int numOfVer = g.n/(2*(int)Math.sqrt(Math.sqrt(num_of_threads)));
-        int sizeOfVer = r/((int) Math.sqrt(Math.sqrt(num_of_threads)));
-        int exceptedNumOfThreads = (int)Math.sqrt(Math.sqrt(num_of_threads));
+        int numOfVer = g.n/(2*fourthRoot);
+        int sizeOfVer = r/fourthRoot;
+        int exceptedNumOfThreads = (int)Math.pow(fourthRoot,4);
         threads = new ParallelrReadibilityCalc[exceptedNumOfThreads];
         latch = new CountDownLatch(exceptedNumOfThreads);
-        int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
+
         //System.out.println("num of threads: " + n);
         //jos pogledaj za neperfektno dijeljenje
         for(int left = 0; left<fourthRoot; left++)
@@ -129,7 +130,7 @@ public class rReadibilityCalc {
                     {
                         threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
                                 new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
-                                new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*num_of_threads},
+                                new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*numOfVer},
                                 new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
                                 new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch);
                         //threads[thread_cnt-1].run();
@@ -138,7 +139,7 @@ public class rReadibilityCalc {
             }
         } // pretpostavimo da ovo gore radi xD
 
-        System.out.println("Running threads up to " + exceptedNumOfThreads + " threads");
+        System.out.println("Running up to " + exceptedNumOfThreads + " threads");
         if(exceptedNumOfThreads == thread_cnt)
         {
             for(int i=0; i<exceptedNumOfThreads; i++)
