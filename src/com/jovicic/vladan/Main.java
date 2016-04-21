@@ -31,6 +31,7 @@ public class Main {
         if(args.length < 2)
         {
             System.out.println("Input file not specified");
+            return;
         }
         inputFile = args[1];
         GridGraph gg = new GridGraph(6,6);
