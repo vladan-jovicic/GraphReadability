@@ -29,7 +29,7 @@ public class Main {
         }*/
         //String inputFile, outputFile;
         Graph g = new Graph();
-        g.readGraphFromFile("Hadamard.in");
+        g.readGraphFromFile("inputGraph.in");
         outputVertices = "Hadamard.out";
         if(exact == -1)
         {
