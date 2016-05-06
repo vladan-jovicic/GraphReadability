@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 public class rReadibilityCalc {
 
     private Graph g;
-    public IloNumVar [][][][] xvar;
+    public IloIntVar [][][][] xvar;
     private int r;
     private IloIntVar [][] zvar;
     public IloCplex model;
@@ -24,7 +24,7 @@ public class rReadibilityCalc {
     {
         this.r = rr;
         g = gg;
-        xvar = new IloNumVar[g.n/2][g.n/2][r+1][];
+        xvar = new IloIntVar[g.n/2][g.n/2][r+1][];
         zvar = new IloIntVar[g.eSize][];
         try {
             model = new IloCplex();
@@ -51,7 +51,7 @@ public class rReadibilityCalc {
     {
         int eCnt = 0;
         System.out.println("Adding transitivity constraints");
-        int num_of_threads = Runtime.getRuntime().availableProcessors();
+        int num_of_threads = 1; //Runtime.getRuntime().availableProcessors();
         int fourthRoot = (int)Math.sqrt(Math.sqrt(num_of_threads));
         int thread_cnt = 0;
         int numOfVer = g.n/(2*fourthRoot);
@@ -103,13 +103,13 @@ public class rReadibilityCalc {
                     //System.out.println("Dodajem za povezavu " + u + "," + v);
                     //model.addGe(asdas, 1);
                     try {
-                        IloLinearNumExpr expr = model.linearNumExpr();
+                        IloLinearIntExpr expr = model.linearIntExpr();
                         //sad za svaku poziciju i=r ... 1
                         for(int i=r; i>=1; i--)
                         {
                             //dodaj sve varijable
                             expr.addTerm(1, zvar[eCnt][i]);
-                            IloLinearNumExpr expr1 = model.linearNumExpr();
+                            IloLinearIntExpr expr1 = model.linearIntExpr();
                             int othSide = 1;
                             for(int j=i; j>=1; j--)
                             {
@@ -134,7 +134,7 @@ public class rReadibilityCalc {
                     try {
                         for (int i = r; i >= 1; i--) //za svaku poziciju
                         {
-                            IloLinearNumExpr expr = model.linearNumExpr();
+                            IloLinearIntExpr expr = model.linearIntExpr();
                             int othSide = 1;
                             for(int j = i; j>= 1; j--)
                             {
