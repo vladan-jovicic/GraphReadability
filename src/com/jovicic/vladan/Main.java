@@ -26,5 +26,13 @@ public class Main {
                 }
             }
         }
+        /*Graph g = new GridGraph(4,4).getGridGraph();
+        ReadibilityCalculator rb = new ReadibilityCalculator(g, 4,2);
+        if(rb.isReadibilityExactly(3,true))
+        {
+            System.out.println("Done!");
+            g.printVerticesToFile("grid44.out");
+        }*/
+
     }
 }

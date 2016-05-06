@@ -53,8 +53,12 @@ public class ParallelrReadibilityCalc implements Runnable {
             {
                 for (int w = lncoord[0]; w<lncoord[1]; w++)
                 {
+                    if(u == w)
+                        continue;
                     for(int q = rncoord[0]; q<rncoord[1]; q++)
                     {
+                        if(v == q)
+                            continue;
                         for(int i = lrcoord[0]; i<= lrcoord[1]; i++)
                         {
                             for (int j = rrcoord[0]; j<= rrcoord[1]; j++)

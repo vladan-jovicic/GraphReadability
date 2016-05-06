@@ -70,12 +70,17 @@ public class rReadibilityCalc {
                 {
                     for(int j=0; j<fourthRoot; j++)
                     {
-                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
+                        /*threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
                                 new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
                                 new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*numOfVer},
                                 new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
                                 new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch);
-                        //threads[thread_cnt-1].run();
+                        //threads[thread_cnt-1].run();*/
+                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
+                                new int[] {0, g.n/2},
+                                new int[] {g.n/2, g.n},
+                                new int[] {1, r},
+                                new int[] {1, r}, latch);
                     }
                 }
             }
