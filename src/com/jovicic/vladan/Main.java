@@ -37,7 +37,7 @@ public class Main {
             g.printVertices();
             System.out.println("nekaj");
         }*/
-        Graph g = new BipartiteChain(8).getBipartiteChain();
+        Graph g = new BipartiteChain(12).getBipartiteChain();
         ReadibilityCalculator rb = new ReadibilityCalculator(g, 6, 2);
         if(rb.isReadibilityExactly(3, true))
         {
