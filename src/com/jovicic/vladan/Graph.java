@@ -14,6 +14,7 @@ public class Graph {
     private int readibility;
     private int [][] label;
     public int eSize;
+    private int dt = -1;
 
     public Graph ()
     {
@@ -50,12 +51,44 @@ public class Graph {
             }
         }
     }
+
+    public int getDT()
+    {
+        if(dt != -1)
+            return dt;
+        dt = n;
+        for(int u=0; u<n/2; u++)
+        {
+            for(int v=0; v<n/2; v++)
+            {
+                if(u==v)
+                    continue;
+                int cnt1 = 0;
+                int cnt2 = 0;
+                int cnt3 = 0;
+                int cnt4 = 0;
+                for(int w = 0; w<n/2; w++)
+                {
+                    if(adjMatrix[u][n/2+w] && !adjMatrix[v][n/2+w])
+                        cnt1++;
+                    if(adjMatrix[v][n/2+w] && !adjMatrix[u][n/2+w])
+                        cnt2++;
+                    if(adjMatrix[w][n/2+u] && !adjMatrix[w][n/2+v])
+                        cnt3++;
+                    if(adjMatrix[w][n/2+v] && !adjMatrix[w][n/2+u])
+                        cnt4++;
+                }
+                dt = Math.min(dt, Math.min(Math.max(cnt1,cnt2),Math.max(cnt3, cnt4)));
+            }
+        }
+        return dt;
+    }
     public  int getReadability()
     {
         return  readibility;
     }
     //public void
-    public void setLabel(int u, int ind, char c)
+    public void setLabel(int u, int ind, int c)
     {
         //System.out.println("Setting element ("+u+","+ind+") to "+c);
         label[u][ind] = c;
@@ -64,6 +97,15 @@ public class Graph {
     {
         return label[u][ind];
     }
+    public String getVertexLabel(int u)
+    {
+        String ret = "";
+        for(int i=1; i<=readibility; i++)
+        {
+            ret += ("(" + label[u][i] + ")");
+        }
+        return  ret;
+    }
     public void printVertices()
     {
         for(int i=0;i<n;i++)
@@ -71,9 +113,9 @@ public class Graph {
             for(int j=1; j<readibility+1;j++)
             {
                 if(label[i][j]==0)
-                    System.out.print("0");
+                    System.out.print("(0)");
                 else
-                    System.out.print((char)label[i][j]);
+                    System.out.print("("+label[i][j]+")");
             }
             System.out.println();
         }
@@ -119,6 +161,16 @@ public class Graph {
         }catch (Exception e)
         {
             System.out.println("Failed to print");
+        }
+    }
+
+    public void printGraph()
+    {
+        for (int u = 0; u < n / 2; u++) {
+            for (int v = n / 2; v < n; v++) {
+                if (adjMatrix[u][v])
+                    System.out.print(u + " " + v + "\n");
+            }
         }
     }
 

@@ -70,17 +70,11 @@ public class rReadibilityCalc {
                 {
                     for(int j=0; j<fourthRoot; j++)
                     {
-                        /*threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
+                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
                                 new int[] {left*numOfVer,(left == fourthRoot-1)?g.n/2:(left+1)*numOfVer},
                                 new int[] {g.n/2 + right*numOfVer, (right == fourthRoot-1)?g.n:g.n/2 + (right+1)*numOfVer},
                                 new int[] {i*sizeOfVer+1,(i==fourthRoot-1)?r:(i+1)*sizeOfVer},
                                 new int[] {j*sizeOfVer+1,(j==fourthRoot-1)?r:(j+1)*sizeOfVer}, latch);
-                        //threads[thread_cnt-1].run();*/
-                        threads[thread_cnt++] = new ParallelrReadibilityCalc(g, r, xvar, model,
-                                new int[] {0, g.n/2},
-                                new int[] {g.n/2, g.n},
-                                new int[] {1, r},
-                                new int[] {1, r}, latch);
                     }
                 }
             }
@@ -110,7 +104,7 @@ public class rReadibilityCalc {
                     try {
                         IloLinearIntExpr expr = model.linearIntExpr();
                         //sad za svaku poziciju i=r ... 1
-                        for(int i=r; i>=1; i--)
+                        /*for(int i=r; i>=1; i--)
                         {
                             //dodaj sve varijable
                             expr.addTerm(1, zvar[eCnt][i]);
@@ -122,6 +116,19 @@ public class rReadibilityCalc {
                                 expr1.addTerm(1, xvar[u][v-g.n/2][r-j+1][othSide++]);
                             }
                             model.addGe(model.sum(expr1,model.prod(-i, zvar[eCnt][i])),0);
+                        }*/
+                        for(int i=1; i<=r; i++)
+                        {
+                            //dodaj sve varijable
+                            expr.addTerm(1, zvar[eCnt][i]);
+                            IloLinearIntExpr expr1 = model.linearIntExpr();
+                            int othSide = 1;
+                            for(int j=i; j<=r; j++)
+                            {
+                                //xvars[u][v][r-j+1][j]
+                                expr1.addTerm(1, xvar[u][v-g.n/2][j][j-i+1]);
+                            }
+                            model.addGe(model.sum(expr1,model.prod(-1*(r-i+1), zvar[eCnt][i])),0);
                         }
                         eCnt++;
                         model.addGe(expr, 1);
@@ -137,7 +144,7 @@ public class rReadibilityCalc {
                     //moram uzeti negaciju
                     //a to je
                     try {
-                        for (int i = r; i >= 1; i--) //za svaku poziciju
+                        /*for (int i = r; i >= 1; i--) //za svaku poziciju
                         {
                             IloLinearIntExpr expr = model.linearIntExpr();
                             int othSide = 1;
@@ -146,6 +153,16 @@ public class rReadibilityCalc {
                                 expr.addTerm(-1, xvar[u][v-g.n/2][r-j+1][othSide++]);
                             }
                             model.addGe(model.sum(model.constant(i), expr), 1);
+                        }*/
+                        for (int i = 1; i <= r; i++) //za svaku poziciju
+                        {
+                            IloLinearIntExpr expr = model.linearIntExpr();
+                            int othSide = 1;
+                            for(int j = i; j<=r; j++)
+                            {
+                                expr.addTerm(-1, xvar[u][v-g.n/2][j][j-i+1]);
+                            }
+                            model.addGe(model.sum(model.constant(r-i+1), expr), 1);
                         }
                     } catch (Exception e)
                     {
@@ -178,6 +195,7 @@ public class rReadibilityCalc {
                                 //System.out.println(model.getValue(xvar[u][v][i][j]));
                                 if(model.getValue(xvar[u][v-g.n/2][i][j]) == 1)
                                 {
+                                    //System.out.println(u+"("+i+") " + v + "("+j+")");
                                     Tuple t = new Tuple(4);
                                     t.setTouple(new int[] {u,v,i,j});
                                     tuples.add(t);
