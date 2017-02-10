@@ -4,7 +4,7 @@
 
 # do not this at all
 .idea
-*.yml
+*.iml
 
 # User-specific stuff:
 .idea/**/workspace.xml
